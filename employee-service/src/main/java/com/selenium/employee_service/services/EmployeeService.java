@@ -1,5 +1,6 @@
 package com.selenium.employee_service.services;
 
+import com.selenium.employee_service.client.AdressClient;
 import com.selenium.employee_service.entities.Employee;
 import com.selenium.employee_service.repositories.EmployeeRepository;
 import com.selenium.employee_service.response.AddressResponse;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 public class EmployeeService {
 
 
-    RestTemplate restTemplate;
+
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -25,20 +26,17 @@ public class EmployeeService {
     ModelMapper modelMapper;
 
 
+    @Autowired
+    private AdressClient adressClient;
 
 
-    public EmployeeService(@Value("${addressservice.base.url}") String addressBaseURL ,RestTemplateBuilder builder){
-        this.restTemplate = builder
-                            .rootUri(addressBaseURL)
-                            .build();
-    }
 
     public EmployeeResponse getEmployeeById(int id){
 
         Employee employee = employeeRepository.findById(id).get();
         EmployeeResponse employeeResponse = modelMapper.map(employee ,EmployeeResponse.class);
-
-        AddressResponse addressResponse = restTemplate.getForObject("/address/{id}" , AddressResponse.class ,id);
+        System.out.println(employeeResponse);
+        AddressResponse addressResponse = adressClient.getAddressByEmployeeId(id).getBody();
         employeeResponse.setAddressResponse(addressResponse);
         return employeeResponse;
     }
