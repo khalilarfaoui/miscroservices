@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients
 public class EmployeeServiceApplication{
-	@Autowired
-	EmployeeRepository employeeRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
